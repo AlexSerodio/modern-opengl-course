@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Mesh.h"
 
-Mesh::Mesh()
-{
+Mesh::Mesh() {
 	VAO = 0;
 	VBO = 0;
 	IBO = 0;
@@ -60,7 +59,6 @@ void Mesh::ClearMesh() {
 	indexCount = 0;
 }
 
-Mesh::~Mesh()
-{
+Mesh::~Mesh() {
 	ClearMesh();
 }

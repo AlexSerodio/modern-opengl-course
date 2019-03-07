@@ -11,14 +11,11 @@ public:
 	Window();
 	Window(GLint windowWidth, GLint windowHeight);
 
-	int Initialize();
-
 	GLfloat GetBufferWidth();
 	GLfloat GetBufferHeight();
-
 	bool ShouldClose();
-
 	void SwapBuffers();
+	int Initialize();
 
 	~Window();
 

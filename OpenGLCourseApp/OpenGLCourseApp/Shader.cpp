@@ -2,11 +2,18 @@
 #include "Shader.h"
 
 
-Shader::Shader()
-{
+Shader::Shader() {
 	shaderID = 0;
 	uniformModel = 0;
 	uniformProjection = 0;
+}
+
+GLuint Shader::GetProjectionLocation() {
+	return uniformProjection;
+}
+
+GLuint Shader::GetModelLocation() {
+	return uniformModel;
 }
 
 void Shader::CreateFromString(const char* vertexCode, const char* fragmentCode) {
@@ -102,14 +109,6 @@ void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderT
 	glAttachShader(theProgram, theShader);
 }
 
-GLuint Shader::GetProjectionLocation() {
-	return uniformProjection;
-}
-
-GLuint Shader::GetModelLocation() {
-	return uniformModel;
-}
-
 void Shader::UseShader() {
 	glUseProgram(shaderID);
 }
@@ -124,7 +123,6 @@ void Shader::ClearShader() {
 	uniformProjection = 0;
 }
 
-Shader::~Shader()
-{
+Shader::~Shader() {
 	ClearShader();
 }

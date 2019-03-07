@@ -2,8 +2,7 @@
 #include "Window.h"
 
 
-Window::Window()
-{
+Window::Window() {
 	width = 800;
 	height = 600;
 }
@@ -30,23 +29,20 @@ void Window::SwapBuffers() {
 }
 
 int Window::Initialize() {
-	// initialise GLFW
 	if (!glfwInit()) {
 		printf("GLFW initialisation failed!");
 		glfwTerminate();
 		return 1;
 	}
 
-	// setup GLFW window properties
-	// openGL version 3.3
+	// setup GLFW window properties with OpenGL version 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	// no backwards compatibility / don't allow deprecated features
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	// allow forward compatibility
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);		// no backwards compatibility/no deprecated features
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);				// allows forward compatibility
 
-	mainWindow = glfwCreateWindow(width, height, "Test Window", NULL, NULL);
+	mainWindow = glfwCreateWindow(width, height, "Happy Window (:", NULL, NULL);
 	if (!mainWindow) {
 		printf("GLFW window creation failed!");
 		glfwTerminate();
@@ -55,14 +51,9 @@ int Window::Initialize() {
 
 	glfwGetFramebufferSize(mainWindow, &bufferWidth, &bufferHeight);
 
-	// set content for GLEW to use
-	// set the window as the main window where everything will be drew
-	glfwMakeContextCurrent(mainWindow);
+	glfwMakeContextCurrent(mainWindow);			// sets window as main window, where everything will be drew
+	glewExperimental = GL_TRUE;					// allows modern extension features
 
-	// allow modern extension features
-	glewExperimental = GL_TRUE;
-
-	// initialize glew
 	if (glewInit() != GLEW_OK) {
 		printf("GLEW initialization failed!");
 		glfwDestroyWindow(mainWindow);
@@ -72,14 +63,13 @@ int Window::Initialize() {
 
 	glEnable(GL_DEPTH_TEST);
 
-	// setup viewport size / sets the size of drawable window (usually full)
+	// sets the size of drawable window (usually full)
 	glViewport(0, 0, bufferWidth, bufferHeight);
 
 	return 0;
 }
 
-Window::~Window()
-{
+Window::~Window() {
 	glfwDestroyWindow(mainWindow);
 	glfwTerminate();
 }
