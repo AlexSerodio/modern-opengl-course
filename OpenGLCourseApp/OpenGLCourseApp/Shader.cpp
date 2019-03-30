@@ -2,45 +2,70 @@
 #include "Shader.h"
 
 
-Shader::Shader() {
+Shader::Shader()
+{
 	shaderID = 0;
 	uniformModel = 0;
 	uniformProjection = 0;
 }
 
-GLuint Shader::GetProjectionLocation() {
+GLuint Shader::GetProjectionLocation()
+{
 	return uniformProjection;
 }
 
-GLuint Shader::GetModelLocation() {
+GLuint Shader::GetModelLocation()
+{
 	return uniformModel;
 }
 
-GLuint Shader::GetViewLocation() {
+GLuint Shader::GetViewLocation()
+{
 	return uniformView;
 }
 
-GLuint Shader::GetAmbientIntensityLocation() {
+GLuint Shader::GetAmbientIntensityLocation()
+{
 	return uniformAmbientIntensity;
 }
 
-GLuint Shader::GetAmbientColourLocation() {
+GLuint Shader::GetAmbientColourLocation()
+{
 	return uniformAmbientColour;
 }
 
-GLuint Shader::GetDiffuseIntensityLocation() {
+GLuint Shader::GetDiffuseIntensityLocation()
+{
 	return uniformDiffuseIntensity;
 }
 
-GLuint Shader::GetDirectionLocation() {
+GLuint Shader::GetDirectionLocation()
+{
 	return uniformDirection;
 }
 
-void Shader::CreateFromString(const char* vertexCode, const char* fragmentCode) {
+GLuint Shader::GetSpecularIntensityLocation()
+{
+	return uniformSpecularIntensity;
+}
+
+GLuint Shader::GetShininessLocation()
+{
+	return uniformShininess;
+}
+
+GLuint Shader::GetEyePositionLocation()
+{
+	return uniformEyePosition;
+}
+
+void Shader::CreateFromString(const char* vertexCode, const char* fragmentCode)
+{
 	CompileShader(vertexCode, fragmentCode);
 }
 
-void Shader::CreateFromFiles(const char* vertexLocation, const char* fragmentLocation) {
+void Shader::CreateFromFiles(const char* vertexLocation, const char* fragmentLocation)
+{
 	std::string vertexString = ReadFile(vertexLocation);
 	std::string fragmentString = ReadFile(fragmentLocation);
 	const char* vertexCode = vertexString.c_str();
@@ -49,7 +74,8 @@ void Shader::CreateFromFiles(const char* vertexLocation, const char* fragmentLoc
 	CompileShader(vertexCode, fragmentCode);
 }
 
-std::string Shader::ReadFile(const char* fileLocation) {
+std::string Shader::ReadFile(const char* fileLocation)
+{
 	std::string content;
 	std::ifstream fileStream(fileLocation);
 
@@ -68,7 +94,8 @@ std::string Shader::ReadFile(const char* fileLocation) {
 	return content;
 }
 
-void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
+void Shader::CompileShader(const char* vertexCode, const char* fragmentCode)
+{
 	shaderID = glCreateProgram();
 
 	if (!shaderID) {
@@ -106,9 +133,13 @@ void Shader::CompileShader(const char* vertexCode, const char* fragmentCode) {
 	uniformAmbientIntensity = glGetUniformLocation(shaderID, "directionalLight.ambientIntensity");
 	uniformDirection = glGetUniformLocation(shaderID, "directionalLight.direction");
 	uniformDiffuseIntensity = glGetUniformLocation(shaderID, "directionalLight.diffuseIntensity");
+	uniformSpecularIntensity = glGetUniformLocation(shaderID, "material.specularIntensity");
+	uniformShininess = glGetUniformLocation(shaderID, "material.shininess");
+	uniformEyePosition = glGetUniformLocation(shaderID, "eyePosition");
 }
 
-void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType) {
+void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType)
+{
 	GLuint theShader = glCreateShader(shaderType);		// creates an empty shader
 
 	const GLchar* theCode[1];
@@ -134,11 +165,13 @@ void Shader::AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderT
 	glAttachShader(theProgram, theShader);
 }
 
-void Shader::UseShader() {
+void Shader::UseShader()
+{
 	glUseProgram(shaderID);
 }
 
-void Shader::ClearShader() {
+void Shader::ClearShader()
+{
 	if (shaderID != 0) {
 		glDeleteProgram(shaderID);
 		shaderID = 0;
@@ -148,6 +181,7 @@ void Shader::ClearShader() {
 	uniformProjection = 0;
 }
 
-Shader::~Shader() {
+Shader::~Shader()
+{
 	ClearShader();
 }
